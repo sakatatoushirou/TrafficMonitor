@@ -150,6 +150,7 @@ struct PublicSettingData
 	bool swap_up_down{ false };		//交换上传和下载显示的位置
 	bool speed_short_mode{ false };		//网速显示简洁模式（减少小数点的位数，单位不显示“B”）
 	bool separate_value_unit_with_space{ true };	//网速数值和单位用空格分隔
+    bool show_tool_tip{ true };         //显示鼠标提示
 	bool unit_byte{ true };				//使用字节(B)而不是比特(b)为单位
 	SpeedUnit speed_unit;		//网速的单位
 	bool hide_unit;			//隐藏单位
@@ -172,10 +173,12 @@ struct TaskBarSettingData : public PublicSettingData
 {
 	COLORREF  back_color{ RGB(0, 0, 0) };	//背景颜色
 	COLORREF transparent_color{ RGB(0, 0, 0) };		//透明色
+	COLORREF status_bar_color{ RGB(0, 0, 0) };		// CPU/内存 状态条颜色
 	COLORREF text_colors[TASKBAR_COLOR_NUM]{};		//文字颜色（依次为“上传”、“下载”、“CPU”、“内存”的标签和数据颜色）
 	bool value_right_align{ false };	//数值是否右对齐
 	int digits_number{ 4 };				//数据位数
 	bool horizontal_arrange{ true };	//水平排列
+	bool show_status_bar{ true };		//显示 CPU/内存的状态条
 	bool tbar_wnd_on_left{ false };		//如果为true，则任务栏窗口显示在任务栏的左侧（或上方）
 };
 

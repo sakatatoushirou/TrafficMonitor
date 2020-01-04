@@ -39,6 +39,7 @@ void CTaskBarSettingsDlg::DrawStaticColor()
 	}
 	m_back_color_static.SetFillColor(m_data.back_color);
 	m_trans_color_static.SetFillColor(m_data.transparent_color);
+	m_status_bar_color_static.SetFillColor(m_data.status_bar_color);
 }
 
 void CTaskBarSettingsDlg::IniUnitCombo()
@@ -62,6 +63,7 @@ void CTaskBarSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	DDX_Control(pDX, IDC_TEXT_COLOR_STATIC1, m_text_color_static);
 	DDX_Control(pDX, IDC_TEXT_COLOR_STATIC2, m_back_color_static);
+	DDX_Control(pDX, IDC_TEXT_COLOR_STATIC3, m_status_bar_color_static);
 	CTabDlg::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_UNIT_COMBO, m_unit_combo);
 	DDX_Control(pDX, IDC_HIDE_UNIT_CHECK, m_hide_unit_chk);
@@ -90,9 +92,11 @@ BEGIN_MESSAGE_MAP(CTaskBarSettingsDlg, CTabDlg)
 	ON_BN_CLICKED(IDC_SPECIFY_EACH_ITEM_COLOR_CHECK, &CTaskBarSettingsDlg::OnBnClickedSpecifyEachItemColorCheck)
 	ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_COMBO, &CTaskBarSettingsDlg::OnCbnSelchangeDoubleClickCombo)
 	ON_BN_CLICKED(IDC_HORIZONTAL_ARRANGE_CHECK, &CTaskBarSettingsDlg::OnBnClickedHorizontalArrangeCheck)
+	ON_BN_CLICKED(IDC_SHOW_STATUS_BAR_CHECK, &CTaskBarSettingsDlg::OnBnClickedShowStatusBarCheck)
 	ON_BN_CLICKED(IDC_SEPARATE_VALUE_UNIT_CHECK, &CTaskBarSettingsDlg::OnBnClickedSeparateValueUnitCheck)
 	ON_BN_CLICKED(IDC_UNIT_BYTE_RADIO, &CTaskBarSettingsDlg::OnBnClickedUnitByteRadio)
 	ON_BN_CLICKED(IDC_UNIT_BIT_RADIO, &CTaskBarSettingsDlg::OnBnClickedUnitBitRadio)
+    ON_BN_CLICKED(IDC_SHOW_TOOL_TIP_CHK, &CTaskBarSettingsDlg::OnBnClickedShowToolTipChk)
 END_MESSAGE_MAP()
 
 
@@ -123,11 +127,14 @@ BOOL CTaskBarSettingsDlg::OnInitDialog()
 	((CButton*)GetDlgItem(IDC_SPEED_SHORT_MODE_CHECK))->SetCheck(m_data.speed_short_mode);
 	((CButton*)GetDlgItem(IDC_VALUE_RIGHT_ALIGN_CHECK))->SetCheck(m_data.value_right_align);
 	((CButton*)GetDlgItem(IDC_HORIZONTAL_ARRANGE_CHECK))->SetCheck(m_data.horizontal_arrange);
+	((CButton*)GetDlgItem(IDC_SHOW_STATUS_BAR_CHECK))->SetCheck(m_data.show_status_bar);
 	((CButton*)GetDlgItem(IDC_SEPARATE_VALUE_UNIT_CHECK))->SetCheck(m_data.separate_value_unit_with_space);
+	((CButton*)GetDlgItem(IDC_SHOW_TOOL_TIP_CHK))->SetCheck(m_data.show_tool_tip);
 
 	m_text_color_static.SetLinkCursor();
 	m_back_color_static.SetLinkCursor();
 	m_trans_color_static.SetLinkCursor();
+	m_status_bar_color_static.SetLinkCursor();
 	DrawStaticColor();
 
 #ifdef COMPILE_FOR_WINXP
@@ -427,6 +434,16 @@ afx_msg LRESULT CTaskBarSettingsDlg::OnStaticClicked(WPARAM wParam, LPARAM lPara
 		}
 		break;
 	}
+	case IDC_TEXT_COLOR_STATIC3:		//点击“状态条颜色”时
+	{
+		CMFCColorDialogEx colorDlg(m_data.status_bar_color, 0, this);
+		if (colorDlg.DoModal() == IDOK)
+		{
+			m_data.status_bar_color = colorDlg.GetColor();
+			DrawStaticColor();
+		}
+		break;
+	}
 	default:
 		break;
 	}
@@ -456,6 +473,13 @@ void CTaskBarSettingsDlg::OnBnClickedHorizontalArrangeCheck()
 }
 
 
+void CTaskBarSettingsDlg::OnBnClickedShowStatusBarCheck()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	m_data.show_status_bar = (((CButton*)GetDlgItem(IDC_SHOW_STATUS_BAR_CHECK))->GetCheck() != 0);
+}
+
+
 void CTaskBarSettingsDlg::OnBnClickedSeparateValueUnitCheck()
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -476,4 +500,11 @@ void CTaskBarSettingsDlg::OnBnClickedUnitBitRadio()
 	// TODO: 在此添加控件通知处理程序代码
 	m_data.unit_byte = false;
 	IniUnitCombo();
+}
+
+
+void CTaskBarSettingsDlg::OnBnClickedShowToolTipChk()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    m_data.show_tool_tip = (((CButton*)GetDlgItem(IDC_SHOW_TOOL_TIP_CHK))->GetCheck() != 0);
 }
